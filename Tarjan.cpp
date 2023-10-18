@@ -3,6 +3,7 @@ int idx;
 bool ins[N];
 // vector<vector<ll>> scc;//强连通分量
 // stack<int> stk;//强连通分量
+// ll[N] scc 求解2-SAT时 记录当前点所在的强连通分量
 // set<ll> ans;//割点
 // ll R;//割点
 void dfs(ll u){
@@ -55,6 +56,7 @@ void dfs(ll u){
     //         ans[exnum]+=val[tt];
     //         ins[tt] = 0;
     //         ex[tt]=exnum;//将该强连通分量的点存入一个新的点
+    //注意：而用于求解2-SAT问题时若变量A与!A在同一个连通分量则为矛盾
     //         ++siz[ex[u]];//该强连通分量的大小
     //         if (u==tt) break;
     //     }
@@ -66,6 +68,15 @@ void solve(){
         cin >>x>>y;
         add(x,y,1);//缩点多为有向图
         // add(y,x,1);//割点时多为无向图
+        /*
+            对于割点存在变量A与变量B的某种约束
+            需转化为
+            cin >>x>>a>>y>>b;
+            // [1, n] -> false, [n+1, 2n] -> true 
+            // x_a, x_b 均不满足不能同时成立 //
+            add(i+(a^1)*n, j+b*n,1);
+            add(j+(b^1)*n, i+a*n,1);
+        */
     }
     for (int i = 1; i <= n; i++)
     {
@@ -75,6 +86,22 @@ void solve(){
            dfs(i);
          }
     }
+    /*  2-SAT求解
+        bool ok =1;
+        for (int i = 1; i <= n; i++)
+        {
+            if(scc[i]==scc[n+i]){
+                ok =0;
+            }
+        }
+        for (int i = 1; i <= n; i++)
+        {
+            if (scc[i]>scc[i+n])//强联通分量编号越小 -> 拓扑序越大 -> 越优
+                printf("1");
+            else printf("0");
+            printf(" ");
+        }
+    */
     // for (int i = 1; i <= n; i++)
     // {
     //     for (int j = h[i]; ~j; j=e[j].next)
