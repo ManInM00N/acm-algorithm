@@ -1,7 +1,11 @@
 struct BIT
 {
-    int tr[maxn];
+    vector<int> tr;
     const int p = 998244353;
+    BIT(){}
+    template<class T>BIT(T n){
+        tr.resize(n*2+7);
+    }
     ll query(int x){
         ll res = 0;
         while (x)
