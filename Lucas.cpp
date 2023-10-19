@@ -33,7 +33,7 @@ namespace combine
     }
     inline ll C(ll m, ll n)
     { // 求组合
-        return m < n ? 0 : (fact[m] * inv(fact[n], p) % p) * (inv(fact[m - n], p) % p);
+        return m < n ? 0 : (fact[m] * inv(fact[n]) % p) * (inv(fact[m - n]) % p);
     }
     inline ll Lucas(ll m, ll n)
     { // 卢卡斯定理
