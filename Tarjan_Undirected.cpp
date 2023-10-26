@@ -1,5 +1,3 @@
-
-
 int dfn[N],low[N];
 int idx;
 stack<ll> stk;
