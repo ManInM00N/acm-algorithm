@@ -4,7 +4,7 @@ bool ins[N];
 // vector<vector<ll>> scc;//强连通分量
 // stack<int> stk;//强连通分量
 // ll[N] scc 求解2-SAT时 记录当前点所在的强连通分量
-void dfs(ll u){
+void Tarjan(ll u){
     dfn[u] = low[u]=++idx;
     ins[u] =1;
     // stk.push(u);//强连通分量
@@ -12,7 +12,7 @@ void dfs(ll u){
     {
         ll v= e[i].to;
         if (!dfn[v]){
-            dfs(v);
+            Tarjan(v);
             low[u] = min(low[u],low[v]);
         }else if(ins[v]){
             low[u] = min(low[u],dfn[v]);//
@@ -67,7 +67,7 @@ void solve(){
     for (int i = 1; i <= n; i++)
     {
         if (!dfn[i]){
-           dfs(i);
+           Tarjan(i);
         }
     }
     /*  2-SAT求解
