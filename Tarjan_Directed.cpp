@@ -53,7 +53,7 @@ void solve(){
     for (int i = 0; i < m; i++)
     {
         cin >>x>>y;
-        add(x,y,1);//缩点多为有向图
+        add(x,y,1);//缩点为有向图
         /*
             对于2-SAT存在变量A与变量B的某种约束
             需转化为
@@ -66,7 +66,6 @@ void solve(){
     }
     for (int i = 1; i <= n; i++)
     {
-        
         if (!dfn[i]){
            dfs(i);
         }
