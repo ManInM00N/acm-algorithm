@@ -31,7 +31,7 @@ void Tarjan(ll u){
     //     }
     //     sort(res.begin(),res.end());
     //     scc.push_back(res);
-    // }//强连通分量
+    // }
 
     //----------缩点-----------------//
     // if (dfn[u]==low[u]){
