@@ -1,33 +1,7 @@
 ll S, T; // 源点(起点) ,汇点(终点)
-struct node
-{
-    ll to, next;
-    ll w;
-    node() {}
-    node(ll w, ll to) : to(to), next(0), w(w) {}
-    friend bool operator<(node a, node b)
-    {
-        return a.w > b.w;
-    }
-};
-ll nxt, rnxt;
-node e[maxn * 2];
-ll h[N];
 ll pre[N]; // 记录前驱点
 ll mf[N];  // 记录单边最大流量
 ll cur[N], d[N];
-void add(ll u, ll v, ll w)
-{
-    e[++nxt].to = v;
-    e[nxt].next = h[u];
-    e[nxt].w = w;
-    h[u] = nxt;
-}
-void init()
-{
-    nxt = 1; // 注意！由于求最大流需要推流路，将奇数边作为原有向边的反向边，利用偶数对1的异或为偶数+1来辨识，边从2、3开始记
-    memset(h, -1, sizeof(h));
-}
 bool bfs()
 { // 寻找通往汇点（终点）的增广路
     memset(d, 0, sizeof(d));
