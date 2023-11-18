@@ -47,8 +47,6 @@ public:
     vector<int> arr;
     Segment(){};
     template <class T>
-        requires(
-            is_integral_v<T>)
     Segment(T n) : num(n + 7)
     {
         tr.resize(4 * num);//扫描线需要开8倍空间，因为叶节点是按线段计算
@@ -75,9 +73,7 @@ public:
         tr[p].lazy = 0;
     }
     template <class T, class V, class W>
-        requires(
-            is_integral_v<T> && is_integral_v<V> && is_integral_v<W>)
-    void build(T p, V l, W r)
+    void build(V l, W r,T p=1ll )
     {
         tr[p].l = l;
         tr[p].r = r;
@@ -91,9 +87,7 @@ public:
         pushup(p);
     }
     template <class T, class V>
-        requires(
-            is_integral_v<T> && is_integral_v<V>)
-    void update(V p, T x, T y, V z)
+    void update(T x, T y, V z,V p = 1ll )
     {
         if (tr[p].l >= x && tr[p].r <= y)
         {
@@ -111,9 +105,7 @@ public:
     }
 
     template <class T, class V, class W>
-        requires(
-            is_integral_v<T> && is_integral_v<V> && is_integral_v<W>)
-    T query(V p, T x, W y)
+    T query( T x, W y,V p=1ll)
     {
         if (tr[p].l >= x && tr[p].r <= y)
         {
