@@ -53,6 +53,7 @@ public:
     EX_KMP(){};
     EX_KMP(string ss)
     {
+        len = ss.length();
         pattern = ss, z.resize(len + 1);
         pattern = "#" + pattern;
         pattern_getz();
