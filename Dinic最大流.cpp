@@ -1,5 +1,4 @@
 ll S, T; // 源点(起点) ,汇点(终点)
-ll pre[N]; // 记录前驱点
 ll mf[N];  // 记录单边最大流量
 ll cur[N], d[N];
 bool bfs()
@@ -35,9 +34,10 @@ ll dfs(ll now, ll mf)
     {
         ll v = e[i].to, w = e[i].w;
         cur[now] = i; // 当前弧优化
-        if (d[v] == d[now] + 1 && w)
+        if (d[v] == d[now] + 1 && w)//按层推流，费用流是按距离推流
         {                                 // 相邻节点并且还有流量
             ll flow = dfs(v, min(mf, w)); // 求得从此路后可能的flow
+            if (flow ==0) continue;
             e[i].w -= flow;
             e[i ^ 1].w += flow; // 更新残留网
             sum += flow;        // 累加now节点此时可流出的流量
