@@ -73,7 +73,7 @@ public:
         tr[p].lazy = 0;
     }
     template <class T, class V, class W>
-    void build(V l, W r,T p=1ll )
+    void build(T p=1ll,V l, W r )
     {
         tr[p].l = l;
         tr[p].r = r;
@@ -87,7 +87,7 @@ public:
         pushup(p);
     }
     template <class T, class V>
-    void update(T x, T y, V z,V p = 1ll )
+    void update(V p = 1ll,T x, T y, V z )
     {
         if (tr[p].l >= x && tr[p].r <= y)
         {
@@ -105,7 +105,7 @@ public:
     }
 
     template <class T, class V, class W>
-    T query( T x, W y,V p=1ll)
+    T query( V p=1ll, W y,T x)
     {
         if (tr[p].l >= x && tr[p].r <= y)
         {
@@ -121,7 +121,79 @@ public:
         return sum;
     }
 };
+//--------------------树链剖分-------------------//
+// ll val[N],dep[N],siz[N],out[N],son[N];
+// ll fa[N],dfn[N],idx=0,top[N];
+// Segment seg;
+// void dfs(ll u, ll f){
+//     dep[u] = dep[f] +1;    
+//     siz[u] = 1;
+//     ll Maxson = -1;
+//     fa[u] = f;
+//     for (int i = h[u]; ~i; i=e[i].next)
+//     {
+//         ll v= e[i].to;
+//         if (v!=f){
+//             dfs(v,u);
+//             siz[u]+=siz[v];
+//             if (siz[v]>Maxson){
+//                 Maxson = siz[v];
+//                 son[u] = v;
+//             }
+//         }
+//     }
+// }
+// void dfs2(ll u,ll topf){//树剖的topf为此重链的顶部
+//     dfn[u] = ++idx;//dfn序构造线段树
+//     seg.arr[idx] = val[u];
+//     top[u] = topf;//此点所在重链的顶部
+//     if (!son[u]) return;
+//     dfs2(son[u],topf);//优先重儿子
+//     for (int i = h[u]; ~i; i=e[i].next)
+//     {
+//         ll v=e[i].to;
+//         if (!dfn[v]){
+//             dfs2(v,v);
+//         }   
+//     }
+// }
+// void Treeupdate(ll u,ll z){
+//     seg.update(1ll,dfn[u],dfn[u]+siz[u]-1,z);
+// }
+// ll Treequery(ll u){
+//     return seg.query(1ll,dfn[u],dfn[u]+siz[u]-1)%mod;
+// }
+// void Roadupdate(ll u,ll v,ll z){
+//     while (top[v]!=top[u])//通过重链来向上跳,类似于倍增
+//     {
+//         if (dep[top[u]]>dep[top[v]]){//注意是重链深度大的跳,否则会出现重链节点多次取值
+//             swap(u,v);
+//         }
+//         seg.update(1ll,dfn[top[v]],dfn[v],z);
+//         v = fa[top[v]];
+//     }
+//     if (dep[u]>dep[v]) swap(u,v);
+//     seg.update(1ll,dfn[u],dfn[v],z);
+// }
 
+// ll Roadquery(ll u, ll v){
+//     ll sum = 0;
+//     while (top[v]!=top[u])
+//     {
+//         if (dep[top[u]]>dep[top[v]]){
+//             swap(u,v);
+//         }
+//         sum+=seg.query(1ll,dfn[top[v]],dfn[v]);
+//         sum%=mod;
+//         v = fa[top[v]];
+//         /* code */
+//     }
+//     if (dep[u]>dep[v]) swap(u,v);
+//     sum +=seg.query(1ll,dfn[u],dfn[v]);
+//     sum%=mod;
+//     return sum;
+// }
+//--------------------树链剖分-------------------//
 // void solve()//扫描线向上推移遍历
 // {
 //     ll ans =0 ;
