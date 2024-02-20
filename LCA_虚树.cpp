@@ -40,13 +40,14 @@ ll lca(ll x,ll y){
     }
     return fa[x][0];
 }
-
-void build_virtual_tree( vector<ll> a){
+vector<ll> newP;
+ll len;
+void build_virtual_tree( vector<ll> &a){
     //对dfn序排序 保证lca建树的有效性
     sort(a.begin(),a.end(),[&](ll i,ll j){
         return dfn[i]<dfn[j];
     });
-    vector<ll> newP;
+    newP.clear();
     rep(i,a.size()-1){
         newP.push_back(a[i]);
         newP.push_back(lca(a[i+1],a[i]));
@@ -57,7 +58,7 @@ void build_virtual_tree( vector<ll> a){
         return dfn[i]<dfn[j];
     });
     //重新排序并去重
-    ll len = unique(newP.begin(),newP.end())-newP.begin();
+    len = unique(newP.begin(),newP.end())-newP.begin();
     //切忌忘记清除原图
     rep(i,len){
         h[newP[i]]  = -1;
