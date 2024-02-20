@@ -46,6 +46,7 @@ public:
 };
 class EX_KMP
 {
+#define ll long long
 public:
     int len;
     vector<ll> z;
@@ -87,4 +88,5 @@ public:
         }
         return ans;
     }
+#undef ll
 };
