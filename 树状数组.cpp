@@ -1,9 +1,10 @@
+template<class T  = long long>
 struct BIT
 {
-    vector<int> tr;
-    const int p = 998244353;
+    vector<T> tr;
+    T n;
     BIT(){}
-    template<class T>BIT(T n){
+    template<class T>BIT(T n): n(n){
         tr.resize(n*2+7);
     }
     ll query(int x){
@@ -11,7 +12,6 @@ struct BIT
         while (x)
         {
             res += tr[x];
-            res%=p;
             x -= x & (-x);
         }
         return res;
