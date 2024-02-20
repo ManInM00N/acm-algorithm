@@ -5,7 +5,7 @@ struct hash_val
     vector<unsigned long long>has1,has2;
 	vector<unsigned long long>base1,base2;
 	int p1=131,p2=13331;
-	Hash(string s) {
+	hash_val(string s) {
 		int n=s.length();
 		has1.resize(n+1,0);
 		has2.resize(n+1,0);
@@ -18,10 +18,10 @@ struct hash_val
 			base2[i]=base2[i-1]*p2;
 		}
 	}
-	ull calchas1(int l,int r) {
+	unsigned long long calchas1(int l,int r) {
 		return has1[r]-base1[r-l+1]*has1[l-1];
 	}
-	ull calchas2(int l,int r) {
+	unsigned long long calchas2(int l,int r) {
 		return has2[r]-base2[r-l+1]*has2[l-1];	
 	}
 	bool same(int l1,int r1,int l2,int r2) {
