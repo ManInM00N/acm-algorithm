@@ -140,20 +140,42 @@ namespace combine
         for (int i = 1; i <= 2000004; ++i)
             fact[i] = fact[i - 1] * i;
     }
-    //从n个数中选出m个数
+    //从 m 个数中选出 n 个数
     inline Z C(ll m, ll n)
     { // 求组合
         return m < n ? 0ll : (fact[m] / fact[n] / fact[m - n]);
     }
-    //从n个数中选出m个数
+    //从 m 个数中选出 n 个数
     inline Z Lucas(ll m, ll n)
     { // 卢卡斯定理
         return n == 0 ? 1ll : C(m % p, n % p) * Lucas(m / p, n / p);
     }
-    //从m个数中按顺序取n个数
+    //从 m 个数中按顺序取 n 个数
     inline Z P(ll m, ll n)//
     {
         return fact[m] / fact[m - n];
+    }
+    // Catalan 卡特兰数列
+    inline Z H(ll n){
+        return C(n*2,n)-C(n*2,n-1);
+    }
+    // 第二类斯特林数 表示将 m 个两两不同的元素，划分为 n 个互不区分的非空子集的方案数
+    inline Z Second_Stirling(ll m,ll n){
+        Z ans = 0;
+        ll base = (n%2==1)?-1:1;
+        for (int i = 0; i <= n; i++)
+        {
+            ans += base * power(Z(i), m) / fact[i] / fact[n - i];
+            base*=-1; 
+        }
+        // for (int i = 0; i <=n; i++)
+        // {
+        //     ans+= base*C(n,i)*power(Z(i),m);
+        //     base*=-1;
+        //     /* code */
+        // }
+        // ans/=fact[n];
+        return ans;
     }
 }
 using namespace combine;

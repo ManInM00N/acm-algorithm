@@ -4,7 +4,7 @@ struct BIT
     vector<T> tr;
     T n;
     BIT(){}
-    template<class T>BIT(T n): n(n){
+    BIT(T n): n(n){
         tr.resize(n*2+7);
     }
     ll query(int x){

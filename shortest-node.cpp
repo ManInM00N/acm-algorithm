@@ -1,39 +1,4 @@
-#include <bits/stdc++.h>
-using namespace std;
-typedef long long ll;
-const int maxn = 2e6 + 7;
-const int N = 2e5 + 7;
-const int INF = 0x3f3f3f3f;
-ll n, m, cnt, k, x, y, z;
-struct node
-{
-    ll to, w, next;
-    node() {}
-    node(ll w, ll to) : w(w), to(to), next(0) {}
-    friend bool operator<(node a, node b)
-    {
-        return a.w < b.w;
-    }
-    /* data */
-};
-node e[maxn * 2];
-int h[maxn];
-int nxt;
-void add(ll u, ll v, ll w)
-{
-    e[++nxt].to = v;
-    e[nxt].next = h[u];
-    e[nxt].w = w;
-    h[u] = nxt;
-}
-void init()
-{
-    nxt = 1;
-    for (int i = 1; i <= n; i++)
-    {
-        h[i] = -1;
-    }
-}
+
 bool vis[N];
 ll dis[N];
 void dij(ll st)
