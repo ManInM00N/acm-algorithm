@@ -1,64 +1,92 @@
 template <class T = int >
 class Trie01{
 public:
-    std::vector<std::vector<T>> nex;
+    struct node
+    {
+        // T dir;
+        T dir[2];
+        ll cnt[2];
+        // constexpr vector<ll> dir(2);
+        // constexpr vector<ll> cnt(2);
+        /* data */
+    };
+    
+    std::vector<node> nex;
     T idx;
-    std::vector<T> cnt;
+    T varity = 2;
+    // std::vector<ll> cnt;
     Trie01(){};
     // 总体数量和字典种类
-    Trie01(T siz, T varity = 2){
+    Trie01(T siz, T varity = 2):varity(varity){
         idx =0 ;
-        nex.resize(siz+1,vector<T>(varity));
-        cnt.resize(siz*varity+1);
+        nex.resize(1);
+        // cnt.resize(1);
+        // cnt[0] = INF;
+    }
+    void init(){
+        idx = 0;
+        nex.clear();
+        nex.resize(1);
     }
     void insert(T num){
         int p = 0;
-        for (int i = 30; i >=0; i--)
+        for (int i = 29; i >=0; i--)
         {
             T type = (num>>i) & 1;
-            if (!nex[p][type]){
-                nex[p][type] = ++idx;
+            if (!nex[p].dir[type]){
+                nex[p].dir[type] = ++idx;
+                nex.push_back({{0,0},{0,0}});
             }
-            p = nex[p][type];
-            cnt[p]++;
+            nex[p].cnt[type]++;
+            p = nex[p].dir[type];
+            // cnt[p]= min(cnt[p],rr);
         }
     }
-    bool find( T num ){
+    bool find( T num, ll rr ){
         T p = 0;
-        T res= 0;
-        for (int i = 30; i >=0; i--)
+        ll res= 0;
+        bool ok =0;
+        for (int i = 29; i >=0; i--)
         {
             T type = (num>>i)&1;
-            if (!cnt[nex[p][type]]){
-                return false;
+            T tt = (k>>i)&1;
+            if (tt==0)
+            {
+                if (nex[p].dir[type^1]){
+                    ok |= (rr<=nex[p].cnt[type ^ 1]);
+                }
             }
-            p = nex[p][type];
+            p = nex[p].dir[type^tt];
+            if (!p){
+                return ok;
+            }
+            // p = nex[p][type];
         }
-        return true;
+        return ok;
     }
     void del(T num){
         T p = 0;
-        for (int i = 31 - 1; i >= 0; i--)
+        for (int i = 30; i >= 0; i--)
         {
             T type = (num>>i)&1;
-            p = nex[p][type];
-            cnt[p]--;
+            nex[p].cnt[type]--;
+            p = nex[p].dir[type];
         }
     }
     T find_rank(T num){
         T p = 0;
         T sum = 0;
-        for (int i = 31 - 1; i >= 0; i--)
+        for (int i = 30; i >= 0; i--)
         {
             T type = (num>>i)&1;
-            if ( type==1&&nex[p][type^1] ){
+            if ( type==1&&nex[p].dir[type^1] ){
                 
-                sum+= cnt[nex[p][type^1]];
+                sum+= nex[p].cnt[type^1];
             }
-            if (!nex[p][type]){
+            if (!nex[p].dir[type]){
                 break;
             }
-            p = nex[p][type];
+            p = nex[p].dir[type];
         }
         return sum;
     }
@@ -66,15 +94,18 @@ public:
         T p = 0;
         T ans = 0;
         T sum = 0;
-        for (int i = 31 - 1; i >= 0; i--)
+        for (int i = 30; i >= 0; i--)
         {
             T type = 1;
-            if (cnt[nex[p][type^1]]+sum<num){
-                sum+=cnt[nex[p][type^1]];
-                p = nex[p][type];
+            if (nex[p].cnt[type^1]+sum<num){
+                sum+=nex[p].cnt[type^1];
+                p = nex[p].dir[type];
                 ans+= 1ll<<i;
             }else {
-                p = nex[p][type^1];
+                p = nex[p].dir[type^1];
+            }
+            if (!p){
+                break;
             }
         }
         return ans;
@@ -121,4 +152,4 @@ public:
         }
         return 1;
     }
-}
+};

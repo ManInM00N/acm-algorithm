@@ -1,9 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-typedef long long ll;
-const int maxn = 2e6 + 7;
-const int N = 2e5+7;
-const int INF = 0x3f3f3f3f;
 // 计算几何模板
 const double eps = 1e-8;
 const double inf = 1e20;
@@ -149,12 +143,12 @@ struct Line{
         if(sgn(k-pi)==0)k-=pi;
         return k;
     }
-    //点和直线关系,1在左侧,2在右侧,3在直线上
+    //点和直线关系,1在左侧,-1在右侧,0在直线上
     int relation(Point p){
         int c=sgn((p-s)^(e-s));
         if(c<0) return 1;
-        else if(c>0)return 2;
-        else return 3;
+        else if(c>0)return -1;
+        else return 0;
     }
     //点在线段上的判断
     bool pointonseg(Point p){
@@ -188,7 +182,7 @@ struct Line{
     //两直线关系,0平行,1重合,2相交
     int linecrossline(Line v){
         if((*this).parallel(v))
-        return v.relation(s)==3;
+        return v.relation(s)==0;
         return 2;
     }
     //求两直线的交点，要保证两直线不平行或重合
@@ -432,11 +426,12 @@ struct circle{
             return min(area(),v.area());
         double d=p.distance(v.p);
         double hf=(r+v.r+d)/2.0;
-        double ss=2*sqrt(hf*(hf-r)*(hf-v.r)*(hf-d));
+        // double ss=2*sqrt(hf*(hf-r)*(hf-v.r)*(hf-d));
         double a1=acos((r*r+d*d-v.r*v.r)/(2.0*r*d));
-        a1=a1*r*r;
         double a2=acos((v.r*v.r+d*d-r*r)/(2.0*v.r*d));
+        double ss = v.r*v.r*sinl(a2)/2+r*r*sinl(a1)/2;
         a2=a2*v.r*v.r;
+        a1=a1*r*r;
         return a1+a2-ss;
     }
     //求圆和三角形pab的相交面积

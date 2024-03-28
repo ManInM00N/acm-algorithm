@@ -2,8 +2,7 @@
 using namespace std;
 typedef long long ll;
 
-#define ls p << 1
-#define rs p << 1 | 1
+
 /* 扫描线
 struct line
 {
@@ -33,20 +32,22 @@ void init(){
 }
 */
 
+template<class T = long long>
 class Segment
 {
-public:
-    struct tree
+#define ls p << 1
+#define rs p << 1 | 1
+public : 
+struct tree
     {
-        int l, r;
-        int sum, lazy;
+        T l, r;
+        T sum, lazy;
         //扫描线的sum区间的真实长度，lazy表示被覆盖的次数
     };
-    int num;
+    T num;
     vector<tree> tr;
-    vector<int> arr;
+    vector<T> arr;
     Segment(){};
-    template <class T>
     Segment(T n) : num(n + 7)
     {
         tr.resize(4 * num);//扫描线需要开8倍空间，因为叶节点是按线段计算
@@ -72,8 +73,7 @@ public:
         tr[rs].lazy += tr[p].lazy;
         tr[p].lazy = 0;
     }
-    template <class T, class V, class W>
-    void build(T p=1ll,V l, W r )
+    void build(T p,T l, T r )
     {
         tr[p].l = l;
         tr[p].r = r;
@@ -86,8 +86,7 @@ public:
         build(rs, mid + 1, r);
         pushup(p);
     }
-    template <class T, class V>
-    void update(V p = 1ll,T x, T y, V z )
+    void update(T p ,T x, T y, T z )
     {
         if (tr[p].l >= x && tr[p].r <= y)
         {
@@ -104,8 +103,7 @@ public:
         pushup(p);
     }
 
-    template <class T, class V, class W>
-    T query( V p=1ll, W y,T x)
+    T query( T p, T x,T y)
     {
         if (tr[p].l >= x && tr[p].r <= y)
         {
@@ -120,6 +118,8 @@ public:
             sum += query(rs, x, y);
         return sum;
     }
+    #undef ls 
+    #undef rs
 };
 //--------------------树链剖分-------------------//
 // ll val[N],dep[N],siz[N],out[N],son[N];
@@ -161,7 +161,7 @@ public:
 //     seg.update(1ll,dfn[u],dfn[u]+siz[u]-1,z);
 // }
 // ll Treequery(ll u){
-//     return seg.query(1ll,dfn[u],dfn[u]+siz[u]-1)%mod;
+//     return seg.query(1ll,dfn[u],dfn[u]+siz[u]-1);
 // }
 // void Roadupdate(ll u,ll v,ll z){
 //     while (top[v]!=top[u])//通过重链来向上跳,类似于倍增
@@ -184,16 +184,17 @@ public:
 //             swap(u,v);
 //         }
 //         sum+=seg.query(1ll,dfn[top[v]],dfn[v]);
-//         sum%=mod;
 //         v = fa[top[v]];
 //         /* code */
 //     }
 //     if (dep[u]>dep[v]) swap(u,v);
 //     sum +=seg.query(1ll,dfn[u],dfn[v]);
-//     sum%=mod;
 //     return sum;
 // }
 //--------------------树链剖分-------------------//
+
+
+
 // void solve()//扫描线向上推移遍历
 // {
 //     ll ans =0 ;
