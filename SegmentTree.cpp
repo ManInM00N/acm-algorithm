@@ -33,25 +33,34 @@ void init(){
 */
 
 template<class T = long long>
+struct info
+    {
+        T l, r;
+        T sum, lazy;
+        //扫描线的sum区间的真实长度，lazy表示被覆盖的次数
+        info operator+(const info& a)const{
+            info newone = *this;
+            newone.r = a.r;
+            newone.sum +=a.sum;
+            return newone;
+        }
+    };
+
+template<class T = long long>
 class Segment
 {
 #define ls p << 1
 #define rs p << 1 | 1
 public : 
-struct tree
-    {
-        T l, r;
-        T sum, lazy;
-        //扫描线的sum区间的真实长度，lazy表示被覆盖的次数
-    };
+
     T num;
-    vector<tree> tr;
+    vector<info<T>> tr;
     vector<T> arr;
     Segment(){};
     Segment(T n) : num(n + 7)
     {
         tr.resize(4 * num);//扫描线需要开8倍空间，因为叶节点是按线段计算
-        arr.resize(num, 1);
+        arr.resize(num, 0);
     };
     void pushup(ll p)
     {
@@ -103,19 +112,24 @@ struct tree
         pushup(p);
     }
 
-    T query( T p, T x,T y)
+    info<T> query( T p, T x,T y)
     {
         if (tr[p].l >= x && tr[p].r <= y)
         {
-            return tr[p].sum;
+            return tr[p];
         }
         long long mid = tr[p].l + tr[p].r >> 1;
-        T sum = 0;
+        info<T> sum;
         pushdown(p);
-        if (mid >= x)
-            sum += query(ls, x, y);
-        if (mid < y)
-            sum += query(rs, x, y);
+        if (mid >= x){
+
+            sum = query(ls, x, y);
+            if (mid<y){
+                sum = sum + query(rs,x,y);
+            }
+        }
+        else if (mid < y)
+            sum = query(rs, x, y);
         return sum;
     }
     #undef ls 

@@ -1,20 +1,13 @@
 template <class T = int >
 class Trie01{
 public:
-    struct node
-    {
-        // T dir;
+    struct node{
         T dir[2];
         ll cnt[2];
-        // constexpr vector<ll> dir(2);
-        // constexpr vector<ll> cnt(2);
-        /* data */
     };
-    
     std::vector<node> nex;
     T idx;
     T varity = 2;
-    // std::vector<ll> cnt;
     Trie01(){};
     // 总体数量和字典种类
     Trie01(T siz, T varity = 2):varity(varity){
@@ -46,12 +39,10 @@ public:
         T p = 0;
         ll res= 0;
         bool ok =0;
-        for (int i = 29; i >=0; i--)
-        {
+        for (int i = 29; i >=0; i--){
             T type = (num>>i)&1;
             T tt = (k>>i)&1;
-            if (tt==0)
-            {
+            if (tt==0){
                 if (nex[p].dir[type^1]){
                     ok |= (rr<=nex[p].cnt[type ^ 1]);
                 }
@@ -66,8 +57,7 @@ public:
     }
     void del(T num){
         T p = 0;
-        for (int i = 30; i >= 0; i--)
-        {
+        for (int i = 30; i >= 0; i--){
             T type = (num>>i)&1;
             nex[p].cnt[type]--;
             p = nex[p].dir[type];
@@ -76,11 +66,9 @@ public:
     T find_rank(T num){
         T p = 0;
         T sum = 0;
-        for (int i = 30; i >= 0; i--)
-        {
+        for (int i = 30; i >= 0; i--){
             T type = (num>>i)&1;
-            if ( type==1&&nex[p].dir[type^1] ){
-                
+            if ( type==1&&nex[p].dir[type^1] ){   
                 sum+= nex[p].cnt[type^1];
             }
             if (!nex[p].dir[type]){
@@ -94,8 +82,7 @@ public:
         T p = 0;
         T ans = 0;
         T sum = 0;
-        for (int i = 30; i >= 0; i--)
-        {
+        for (int i = 30; i >= 0; i--){
             T type = 1;
             if (nex[p].cnt[type^1]+sum<num){
                 sum+=nex[p].cnt[type^1];
@@ -132,8 +119,7 @@ public:
     }
     void insert(std:: string ss){
         int p = 0;
-        for (int i = 0; i < ss.length(); i++)
-        {
+        for (int i = 0; i < ss.length(); i++){
             T type = ss[i]-'a';
             if (!nex[p][type]){
                 nex[p][type] = ++idx;
@@ -144,8 +130,7 @@ public:
     }
     bool find(std:: string ss){
         T p = 0;
-        for (int i = 0; i < ss.length(); i++)
-        {
+        for (int i = 0; i < ss.length(); i++){
             T type = ss[i]-'a';
             if (!nex[p][type]) return 0;
             p = nex[p][type];

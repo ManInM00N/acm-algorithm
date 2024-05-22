@@ -84,7 +84,6 @@ void dfs(ll u,ll f){
 }
 //需要先求出第一个重心
 void solve(){
-
     S = n;
     cnt =0;
     MaxSiz[0] = n;

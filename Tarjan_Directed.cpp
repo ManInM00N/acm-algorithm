@@ -1,9 +1,10 @@
 int dfn[N],low[N];
 int idx;
 bool ins[N];
-// vector<vector<ll>> scc;//强连通分量
-// stack<int> stk;//强连通分量
-// ll[N] scc 求解2-SAT时 记录当前点所在的强连通分量
+vector<vector<ll>> scc;//强连通分量
+stack<int> stk;//强连通分量
+ll exnum;
+ll ex[N];//求解2-SAT时 记录当前点所在强连通分量
 void Tarjan(ll u){
     dfn[u] = low[u]=++idx;
     ins[u] =1;
@@ -74,13 +75,13 @@ void solve(){
         bool ok =1;
         for (int i = 1; i <= n; i++)
         {
-            if(scc[i]==scc[n+i]){
+            if(ex[i]==ex[n+i]){
                 ok =0;
             }
         }
         for (int i = 1; i <= n; i++)
         {
-            if (scc[i]>scc[i+n])//强联通分量编号越小 -> 拓扑序越大 -> 越优
+            if (ex[i]>ex[i+n])//强联通分量编号越小 -> 拓扑序越大 -> 越优
                 printf("1");
             else printf("0");
             printf(" ");

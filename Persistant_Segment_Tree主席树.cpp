@@ -97,4 +97,5 @@ public:
         }
     }
 };
+// 最初的版本p默认为0  -> seg.root[0] = seg.build(l,r)
 // 更新的版本 ： root[i] = modify(1,n,pos,val, root[x])

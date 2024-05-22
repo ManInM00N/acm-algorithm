@@ -44,8 +44,8 @@ public:
         return ans;
     }
 };
-class EX_KMP
-{
+class EX_KMP{
+//求解字符串与后缀i的lcp即 s[i:]与text的最长公共前缀
 #define ll long long
 public:
     int len;

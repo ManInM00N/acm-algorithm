@@ -42,7 +42,6 @@ struct DSU
         return siz[find(x)];
     }
 #undef ll
-#undef Pa
 };
 struct DSU_RollBack
 {
@@ -102,5 +101,4 @@ struct DSU_RollBack
         return cnt;
     }
     #undef ll
-    #undef Pa
 };
