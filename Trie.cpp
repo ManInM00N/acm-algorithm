@@ -144,38 +144,54 @@ template <class T = int> class Trie01 {
     T pre(T num) { return find_by_rank(find_rank(num)); }
     T nxt(T num) { return find_by_rank(find_rank(num + 1) + 1); }
 };
-template <class T = int >
-class Trie{
-public:
-    std::vector<std::vector<T>> nex;
-    T idx;
-    std::vector<T> cnt;
-    Trie(){};
+class Trie {
+  public:
+    struct node {
+        std::vector<int> dir;
+    };
+    std::vector<node> nex;
+    std::vector<int> cnt;
+    int idx, varity;
+    Trie() {};
     // 总体数量和字典种类
-    Trie(T siz, T varity = 26){
-        idx =0 ;
-        nex.resize(siz+1,vector<T>(varity));
-        cnt.resize(siz*varity+1);
+    Trie(int varity = 26) : varity(varity) {
+        idx = 0;
+        nex.clear();
+        nex.push_back({vector<int>(varity)});
+        /*nex.resize(1, {vector<int>(varity)});*/
+        cnt.resize(1);
     }
-    void insert(std:: string ss){
+    void init() {
+        idx = 0;
+        nex.clear();
+        nex.push_back({vector<int>(varity)});
+        /*nex.resize(1, {vector<int>(varity)});*/
+        cnt.resize(1);
+    }
+    void insert(std::string ss) {
         int p = 0;
-        for (int i = 0; i < ss.length(); i++){
-            T type = ss[i]-'a';
-            if (!nex[p][type]){
-                nex[p][type] = ++idx;
+        for (int i = 0; i < ss.length(); i++) {
+            int type = ss[i];
+            if (!nex[p].dir[type]) {
+                nex[p].dir[type] = ++idx;
+                nex.push_back({vector<int>(varity)});
+                cnt.push_back(0);
             }
-            p = nex[p][type];
+            p = nex[p].dir[type];
             cnt[p]++;
         }
     }
-    bool find(std:: string ss){
-        T p = 0;
-        for (int i = 0; i < ss.length(); i++){
-            T type = ss[i]-'a';
-            if (!nex[p][type]) return 0;
-            p = nex[p][type];
+    ll find(std::string ss) {
+        int p = 0;
+        ll res = 0;
+        for (int i = 0; i < ss.length(); i++) {
+            int type = ss[i];
+            if (!nex[p].dir[type])
+                return 0;
+            p = nex[p].dir[type];
+            /*res += cnt[p];*/
         }
-        return 1;
+        return cnt[p];
     }
 };
 // clang-format on
