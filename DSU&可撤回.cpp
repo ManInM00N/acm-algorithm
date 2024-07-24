@@ -1,3 +1,4 @@
+// clang-format off
 struct DSU
 {
 #define ll long long
@@ -87,18 +88,18 @@ struct DSU_RollBack
     {
         return siz[find(x)];
     }
-    ll roll_back(){
-        ll cnt = stk.size();
-        while (!stk.empty()&&limit>0)
+    ll roll_back(ll req = 1e9){
+        while (!stk.empty()&&req>0)
         {
             ll x = stk.top();
             stk.pop();
             limit--;
+            req--;
             siz[f[x]]-=siz[x];
             f[x] = x;
         }
-        limit = 0;
-        return cnt;
+        return limit;
     }
     #undef ll
 };
+// clang-format on
