@@ -99,6 +99,7 @@ class DynamicSegmentTree {
         if (ql <= ld && rd <= qr) {
             return tr[p];
         }
+        pushdown(p);
         info res;
         ll mid = ld + rd >> 1;
         if (ql <= mid) {
