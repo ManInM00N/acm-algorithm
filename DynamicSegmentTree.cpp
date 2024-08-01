@@ -15,6 +15,7 @@ class DynamicSegmentTree {
 #define rs tr[p].r
     vector<info> tr;
     vector<int> rt;
+    stack<int> cyc;
     int num;
     int dir;
     DynamicSegmentTree(int _) : num(_) {
@@ -23,6 +24,11 @@ class DynamicSegmentTree {
         rt.resize(num + 1, 0);
     }
     inline int AddNode(int p) {
+        if (!cyc.empty()){
+            p = cyc.top();
+            cyc.pop();
+            return p;
+        }
         ++dir;
         if (!p) {
             tr[dir] = info();
@@ -80,12 +86,16 @@ class DynamicSegmentTree {
             return a;
         if (l == r) {
             tr[a].sum += tr[b].sum;
+            tr[b] = info();
+            cyc.push(b);
             return a;
         }
         ll mid = l + r >> 1;
         tr[a].l = Merge(tr[a].l, tr[b].l, l, mid);
         tr[a].r = Merge(tr[a].r, tr[b].r, mid + 1, r);
         pushup(a);
+        tr[b] = info();
+        cyc.push(b);
         return a;
     }
     info Query(int p, ll ld, ll rd, ll ql, ll qr) {
@@ -113,4 +123,3 @@ class DynamicSegmentTree {
     使用seg.rt[0] = seg.Modify(seg.rt[0],1,n,x,y,z);
  */
 // clang-format on
-
