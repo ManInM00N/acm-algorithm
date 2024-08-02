@@ -20,7 +20,7 @@ class DynamicSegmentTree {
     int dir;
     DynamicSegmentTree(int _) : num(_) {
         dir = 0;
-        tr.resize((num + 1) * 50);
+        tr.resize((num + 1) * 16);
         rt.resize(num + 1, 0);
     }
     inline int AddNode(int p) {
@@ -38,6 +38,11 @@ class DynamicSegmentTree {
         return dir;
     }
     inline int AddNode(info _) {
+        if (!cyc.empty()){
+            int p = cyc.top();
+            cyc.pop();
+            return p;
+        }
         ++dir;
         tr[dir] = _;
         return dir;
@@ -91,6 +96,12 @@ class DynamicSegmentTree {
             return a;
         }
         ll mid = l + r >> 1;
+        /*
+            计算两段区间相互作用可以造成的贡献
+            例如计算逆序对数量  
+            交换区间: tr[tr[a].l].sum * tr[tr[b].r].sum 
+            不交换: tr[tr[a].r].sum + tr[tr[b].l].sum
+        */
         tr[a].l = Merge(tr[a].l, tr[b].l, l, mid);
         tr[a].r = Merge(tr[a].r, tr[b].r, mid + 1, r);
         pushup(a);
