@@ -47,15 +47,15 @@ template <class T = long long> struct info {
     }
 };
 
-template <class T = long long> class Segment {
+template <class T = long long> class SegmentTree {
 #define ls p << 1
 #define rs p << 1 | 1
   public:
     T num;
     vector<info<T>> tr;
     vector<T> arr;
-    Segment(){};
-    Segment(T n) : num(n + 7) {
+    SegmentTree(){};
+    SegmentTree(T n) : num(n + 7) {
         tr.resize(4 * num); // 扫描线需要开8倍空间，因为叶节点是按线段计算
         arr.resize(num, 0);
     };
@@ -156,7 +156,7 @@ template <class T = long long> class Segment {
 #undef ls
 #undef rs
 };
-Segment seg;
+SegmentTree seg;
 void dfs(ll u, ll f) {
     dep[u] = dep[f] + 1;
     siz[u] = 1;
