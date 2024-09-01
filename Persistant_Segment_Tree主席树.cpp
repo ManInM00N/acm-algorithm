@@ -1,7 +1,7 @@
 class info {
   public:
     int l = 0, r = 0;
-    int val = INF;
+    int val = 0;
     info operator+(const info& b) const {
         info a = *this, c;
         c.val = min(a.val, b.val);
@@ -10,7 +10,7 @@ class info {
 };
 template <class T = long long> class Persistant_Segment_Tree {
   public:
-    constexpr static int maxn = 1e5 + 7;
+    constexpr static int maxn = 5e5 + 7;
     // 与常规线段树不同  主席树结构体的l,r是对树的索引而不是区间的索引！！
     // 而函数中的参数ld,rd则是对应的区间
     vector<info> tr;
@@ -18,7 +18,7 @@ template <class T = long long> class Persistant_Segment_Tree {
     int dir, num;        // dir为节点数  siz为主席树范围
     Persistant_Segment_Tree(int n = maxn) : num(n + 7) {
         dir = 0;
-        arr.resize(num, INF);
+        arr.resize(num, 0);
         rt.resize(num);
         tr.resize(num << 5);
     }
@@ -37,7 +37,7 @@ template <class T = long long> class Persistant_Segment_Tree {
     inline int copy(int p) {
         ++dir;
         tr[dir] = tr[p];
-        // tr[dir].val ++ ;  //区间第k值的前缀和累加  若为单点历史修改则不需要
+        tr[dir].val++; // 区间第k值的前缀和累加  若为单点历史修改则不需要
         return dir;
     }
     constexpr inline int GetHead(int p) { return rt[p]; }
@@ -73,7 +73,7 @@ template <class T = long long> class Persistant_Segment_Tree {
         // pushup(p);
         return p;
     }
-    T Query(T ld, T rd, T pos, T p) {
+    T Query(T p, T ld, T rd, T pos) {
         if (ld == rd) {
             return tr[p].val;
         }
@@ -96,6 +96,22 @@ template <class T = long long> class Persistant_Segment_Tree {
             return Query_Kth(mid + 1, rd, tr[ql].r, tr[qr].r, k - lsum);
         }
     }
+    // k表示区间的众数阈值
+    info Query_Mode(T ql, T qr, T ld, T rd, T k) {
+        if (ld == rd) {
+            return info{0, 0, ld};
+        }
+        T mid = ld + rd >> 1;
+        T lsum = tr[tr[qr].l].val - tr[tr[ql].l].val;
+        T rsum = tr[tr[qr].r].val - tr[tr[ql].r].val;
+        if (lsum > k) {
+            return Query_Kth(tr[ql].l, tr[qr].l, ld, mid, k);
+        }
+        if (rsum > k) {
+            return Query_Kth(tr[ql].r, tr[qr].r, mid + 1, rd, k);
+        }
+        return info{0, 0, 0};
+    }
     info Query(int p, ll ld, ll rd, int ql, int qr) {
         if (ql <= ld && rd <= qr) {
             return tr[p];
@@ -115,5 +131,5 @@ template <class T = long long> class Persistant_Segment_Tree {
     }
 };
 // 最初的版本p默认为0  -> seg.root[0] = seg.build(l,r)
-// 更新的版本 ： root[i] = modify(1,n,pos,val, root[x])
+// 更新的版本 ： root[i] = modify(root[x],1,n,pos,val)
 // 选取rt [查询] 的时候,切记不要使用未被使用的节点
