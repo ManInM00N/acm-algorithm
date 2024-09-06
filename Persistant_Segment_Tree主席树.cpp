@@ -60,8 +60,9 @@ template <class T = long long> class Persistant_Segment_Tree {
     int Modify(int p, int ld, int rd, int pos, int val) // 历史版本单点修改
     {
         p = copy(p);
+        tr[p].val+=val;
         if (ld == rd) {
-            tr[p].val = min(tr[p].val, val); // 版本修改
+            // tr[p].val = min(tr[p].val, val); // 版本修改
             return p;
         }
         T mid = ld + rd >> 1;
@@ -82,6 +83,39 @@ template <class T = long long> class Persistant_Segment_Tree {
             return Query(tr[p].l, ld, mid, pos);
         } else {
             return Query(tr[p].r, mid + 1, rd, pos);
+        }
+    }
+    // 带修的区间查询第k,即树状数组套主席树
+    T Query_Kth_Extent(vector<T>& lp, vector<T>& rp, T ld, T rd, T k) {
+        if (ld == rd)
+            return ld;
+        T mid = ld + rd >> 1;
+        ll lsum = 0;
+        for (auto i : rp) {
+            lsum += tr[tr[i].l].val;
+        }
+        for (auto i : lp) {
+            lsum -= tr[tr[i].l].val;
+        }
+        if (lsum >= k) {
+            for (auto& i : lp) {
+                i = tr[i].l;
+            }
+            for (auto& i : rp) {
+                i = tr[i].l;
+            }
+
+            return Query_Kth_Extent(lp, rp, ld, mid, k);
+
+        } else {
+            for (auto& i : lp) {
+                i = tr[i].r;
+            }
+            for (auto& i : rp) {
+                i = tr[i].r;
+            }
+
+            return Query_Kth_Extent(lp, rp, mid + 1, rd, k - lsum);
         }
     }
     T Query_Kth(T ld, T rd, T ql, T qr, T k) {

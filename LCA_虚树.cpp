@@ -70,3 +70,42 @@ void build_virtual_tree( vector<ll> &a){
     }
     //建完树后  newP[0:len]为树上节点  a为关键节点
 }
+
+/*  // O(1)求解lca 
+int que[N << 1], lg[N << 1], f[N << 1][21],dfn2[N];
+int idx = 0;
+int dep[N];
+void buildst() {
+    repi(i, 1, idx + 1) f[i][0] = que[i];
+    repi(j, 1, 21) {
+        for (int i = 1; i + (1 << j) <= idx; ++i) {
+            int f1 = f[i][j - 1], f2 = f[i + (1 << j - 1)][j - 1];
+            f[i][j] = dep[f1] < dep[f2] ? f1 : f2;
+        }
+    }
+    lg[0] = -1;
+    repi(i, 1, idx + 1) lg[i] = lg[i >> 1] + 1;
+}
+inline int getlca(int u, int v) {
+    if (dfn2[u] > dfn2[v])
+        swap(u, v);
+    u = dfn2[u], v = dfn2[v];
+    int kk = lg[v - u + 1], f1 = f[u][kk], f2 = f[v - (1 << kk) + 1][kk];
+    return dep[f1] < dep[f2] ? f1 : f2;
+}
+auto dfs = [&](auto self,ll u,ll f)->void{
+    dep[u] = dep[f] + 1;
+    dfn2[u] = ++idx;
+    que[idx] = u;
+    siz[u] = 1;
+    fa[u] = f;
+    for (int i = h[u]; ~i; i = e[i].next) {
+        ll v = e[i].to;
+        if (v != f) {
+            self(self,v, u);
+            siz[u] += siz[v];
+            que[++idx] = u;
+        }
+    }
+};
+*/
