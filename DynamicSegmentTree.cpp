@@ -108,6 +108,27 @@ class DynamicSegmentTree {
         cyc.push(b);
         return a;
     }
+    /* 
+        将满足区间[L,R]的b子树分裂出，通常用于部分合并
+        spilt(tmp,rt[b],L,R,1,n);
+        Merge(rt[a],tmp,1,n);
+    */ 
+    void spilt(int &a,int &b,int L,int R,int ld,int rd){
+        if (!b) return ;
+        if (ld>=L&&rd<=R){
+            a = b;
+            b = 0;
+            return ;
+        }
+        if (!a) a=AddNode(a);
+        int mid = ld+rd>>1;
+        if (L<=mid) spilt(tr[a].l,tr[b].l,L,R,ld,mid);
+        if (R>mid) spilt(tr[a].r,tr[b].r,L,R,mid+1,rd);
+        pushup(a);
+        pushup(b);
+        return ;
+    }
+
     // 注意:此处函数为可持久化处理,即保存子树信息,mle的可能非常大!!!
     int merge(int a, int b, int ld, int rd) {
         if (!a || !b)
